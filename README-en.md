@@ -9,7 +9,7 @@ Released under the MIT license.
 X(old Twitter): @goriponsoft
 
 ## Specifications
-### Basic structure of 16bit segment mapper
+### Overview
 Based on the ASCII mapper, by expanding the segment register to 16 bits, the number of segments is increased by 256 times to a maximum of 65,536 segments, making it possible to manage memory of up to 4 Gbit in the case of 8KB banks and up to 8 Gbits in the case of 16KB banks become.
 
 ### Differences with NEO-8 Mapper
