@@ -33,6 +33,17 @@ The contents of the ROM are mapped in the same way as the conventional ASCII map
 
 Whether mirrors appear on page 0 and page 3 depends on the circuit configuration of the read signal (/RD). For example, if you use the /CS12 signal instead of the /RD signal, no mirror will appear for reading.
 
+### Segment register initial value and initialization code
+The 74HC670, the IC used to implement the segment register, does not have a reset function, and the register values are undefined immediately after power is turned on.
+However, if the segment at startup of the MSX system is undefined, it cannot be used as a mapper, so as a countermeasure, immediately after power-on (and immediately after reset), segment output from the 74HC670 is stopped, and all bits of all segment registers are pulled down 0, the circuit is configured so that segment 0 is mapped to all banks.
+
+The purpose of this feature is to ensure that segment 0 is mapped to all banks, including banks 4000h to 5FFFh, until the MSX system searches for the ROM header and executes the INIT entry for page 1. (This is similar to how banks 4000h to 5FFFh are fixed to segment 0 in the KONAMI4 mapper.)
+
+However, since it does not function as a mapper as it is, segment fixing is now triggered by the "first write to the segment register" and stops (segment output by 74HC670 resumes).
+At that time, all segment registers are switched at the same time, and the undefined value immediately after the power is turned on (in the case of a reset, the value written before the reset) is output to the segments other than the segment register where the write was performed. Therefore, from the program side, it appears that the mapping of all banks from 4000h to BFFFh has changed.
+
+Due to the above circumstances, when using this mapper, it is necessary to map banks 4000h to 5FFFh to segment 0 and other banks to appropriate segments as early as possible during INIT entry.
+
 ### Mapper
 |Bank|Segment register address|Initial Segment|
 |:--|:--|--:|
