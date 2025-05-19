@@ -1,6 +1,8 @@
 # Implementation example of 16bit segment 8KB bank mega ROM controller using general-purpose logic IC
 [日本語版 README はこちら](https://github.com/goriponsoft/16bitBank-MEGAROM-Controller-74670/blob/main/README.md)
 
+![](schematic.png)
+
 This is a proposed circuit example (74x670 specification) that expands the segment register to 16 bits based on an ASCII-8 mega ROM controller.
 Although operation has not been confirmed, an 8-bit segment mega ROM using a similar 74x670 (4x4 register file) is released as [ESE2-RAM](https://github.com/goriponsoft/ESE2RAM-Cartridge-74670), and its operation has been confirmed.
 
@@ -47,9 +49,10 @@ Due to the above circumstances, when using this mapper, it is necessary to map b
 ### Mapper
 |Bank|Segment register address|Initial Segment|
 |:--|:--|--:|
-|4000h-5FFFh(mirror at 0000h-1FFFh)|low byte 6000h/high byte 6001h (mirror at 6002h-67FFh.)|Undefined [^1]|
-|6000h-7FFFh(mirror at 2000h-3FFFh)|low byte 6800h/high byte 6801h (mirror at 6802h-6FFFh.)|Undefined [^1]|
-|8000h-9FFFh(mirror at C000h-DFFFh)|low byte 7000h/high byte 7001h (mirror at 7002h-77FFh.)|Undefined [^1]|
-|A000h-BFFFh(mirror at E000h-FFFFh)|low byte 7800h/high byte 7801h (mirror at 7802h-7FFFh.)|Undefined [^1]|
+|4000h-5FFFh(mirror at 0000h-1FFFh[^2])|low byte 6000h/high byte 6001h (mirror at 6002h-67FFh.)|Undefined [^1]|
+|6000h-7FFFh(mirror at 2000h-3FFFh[^2])|low byte 6800h/high byte 6801h (mirror at 6802h-6FFFh.)|Undefined [^1]|
+|8000h-9FFFh(mirror at C000h-DFFFh[^2])|low byte 7000h/high byte 7001h (mirror at 7002h-77FFh.)|Undefined [^1]|
+|A000h-BFFFh(mirror at E000h-FFFFh[^2])|low byte 7800h/high byte 7801h (mirror at 7802h-7FFFh.)|Undefined [^1]|
 
 [^1]: Until the first write is made to the segment register, it is fixed at 0, and all the segment registers other than the one to which the write is performed change to an undefined value all at once.
+[^2]: Depends on the memory's implementation of the READ signal.
